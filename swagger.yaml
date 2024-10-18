@@ -6,80 +6,128 @@ info:
 paths:
   /api/register:
     post:
-      summary: "Register API"
-      description: "Register an API on the I14Y platform."
+      summary: "Register a new API"
+      description: "This endpoint allows you to register a new API on the I14Y platform, including metadata such as title, description, and access rights."
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                apiTitel:
-                  type: string
-                  description: "API title"
-                beschreibung:
-                  type: string
-                  description: "API description"
-                herausgeber:
-                  type: string
-                  description: "Publisher organization"
-                zugriffsrechte:
-                  type: string
-                  enum: ["Öffentlich", "Eingeschränkt", "Nicht-öffentlich"]
-                  description: "Access rights"
-                endpointURL:
-                  type: string
-                  format: uri
-                  description: "Primary endpoint URL of the API"
-                kontaktEMailAdresse:
-                  type: string
-                  format: email
-                  description: "Contact email"
-                lizenz:
-                  type: string
-                  description: "License under which the API data is provided"
-                schlüsselwörter:
-                  type: array
-                  items:
-                    type: string
-                  description: "Keywords for better discoverability"
-                dokumentationURL:
-                  type: string
-                  format: uri
-                  description: "URL to the API documentation"
-                version:
-                  type: string
-                  description: "API version"
-                themen:
-                  type: array
-                  items:
-                    type: string
-                  description: "Thematic areas"
-                kontaktstelleOrganisation:
-                  type: string
-                  description: "Contact point organization"
-                kontaktstelleTelefon:
-                  type: string
-                  description: "Contact phone number"
-                kontaktstelleAdresse:
-                  type: string
-                  description: "Contact address"
-                landingPage:
-                  type: string
-                  format: uri
-                  description: "Landing page of the API"
-              required:
-                - apiTitel
-                - beschreibung
-                - herausgeber
-                - zugriffsrechte
-                - endpointURL
-                - kontaktEMailAdresse
+              $ref: '#/components/schemas/APIRegistration'
+            example:
+              apiTitel: "Example API"
+              beschreibung: "This API allows users to perform example operations."
+              herausgeber: "Federal Office of Information"
+              zugriffsrechte: "Öffentlich"
+              endpointURL: "https://api.example.com/v1"
+              kontaktEMailAdresse: "support@example.com"
+              lizenz: "MIT License"
+              schlüsselwörter: ["API", "Example", "Data"]
+              dokumentationURL: "https://docs.example.com"
+              version: "1.0.0"
+              themen: ["Public data", "Services"]
+              kontaktstelleOrganisation: "Federal Office of Information"
+              kontaktstelleTelefon: "+41 79 123 45 67"
+              kontaktstelleAdresse: "Example Street 10, 1000 City"
+              landingPage: "https://example.com"
       responses:
         '200':
-          description: "API successfully registered"
+          description: "API successfully registered."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: "Success message."
+              example:
+                message: "API registration successful"
         '400':
-          description: "Invalid input"
+          description: "Invalid input. Please ensure all required fields are included."
+          content:
+            application/json:
+              example:
+                error: "Invalid input data"
+                code: 400
+        '401':
+          description: "Unauthorized. The user is not authenticated."
+          content:
+            application/json:
+              example:
+                error: "User is not authorized to perform this action"
+                code: 401
         '500':
-          description: "Internal server error"
+          description: "Internal Server Error. There was an error processing the request."
+          content:
+            application/json:
+              example:
+                error: "Internal server error"
+                code: 500
+
+components:
+  schemas:
+    APIRegistration:
+      type: object
+      properties:
+        apiTitel:
+          type: string
+          description: "The title of the API. It should be concise and descriptive."
+        beschreibung:
+          type: string
+          description: "A detailed description of the API, explaining its purpose and functionality."
+        herausgeber:
+          type: string
+          description: "The organization that publishes the API."
+        zugriffsrechte:
+          type: string
+          enum: ["Öffentlich", "Eingeschränkt", "Nicht-öffentlich"]
+          description: "Access rights for the API."
+        endpointURL:
+          type: string
+          format: uri
+          description: "The primary endpoint URL of the API."
+        kontaktEMailAdresse:
+          type: string
+          format: email
+          description: "The contact email address for questions related to the API."
+        lizenz:
+          type: string
+          description: "License under which the API data is provided."
+        schlüsselwörter:
+          type: array
+          items:
+            type: string
+          description: "Keywords for better discoverability of the API."
+        dokumentationURL:
+          type: string
+          format: uri
+          description: "URL to the API's documentation."
+        version:
+          type: string
+          description: "The current version of the API."
+        themen:
+          type: array
+          items:
+            type: string
+          description: "Thematic areas related to the API."
+        kontaktstelleOrganisation:
+          type: string
+          description: "The name of the contact point organization."
+        kontaktstelleTelefon:
+          type: string
+          description: "The contact phone number for the API's responsible organization."
+        kontaktstelleAdresse:
+          type: string
+          description: "The contact address for the API's responsible organization."
+        landingPage:
+          type: string
+          format: uri
+          description: "Landing page where more details about the API are available."
+      required:
+        - apiTitel
+        - beschreibung
+        - herausgeber
+        - zugriffsrechte
+        - endpointURL
+        - kontaktEMailAdresse
