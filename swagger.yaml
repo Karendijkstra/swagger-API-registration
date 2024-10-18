@@ -1,0 +1,85 @@
+openapi: 3.0.1
+info:
+  title: "API Metadata for I14Y"
+  description: "Specification of the required and additional fields for API registration on I14Y."
+  version: '0.1'
+paths:
+  /api/register:
+    post:
+      summary: "Register API"
+      description: "Register an API on the I14Y platform."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiTitel:
+                  type: string
+                  description: "API title"
+                beschreibung:
+                  type: string
+                  description: "API description"
+                herausgeber:
+                  type: string
+                  description: "Publisher organization"
+                zugriffsrechte:
+                  type: string
+                  enum: ["Öffentlich", "Eingeschränkt", "Nicht-öffentlich"]
+                  description: "Access rights"
+                endpointURL:
+                  type: string
+                  format: uri
+                  description: "Primary endpoint URL of the API"
+                kontaktEMailAdresse:
+                  type: string
+                  format: email
+                  description: "Contact email"
+                lizenz:
+                  type: string
+                  description: "License under which the API data is provided"
+                schlüsselwörter:
+                  type: array
+                  items:
+                    type: string
+                  description: "Keywords for better discoverability"
+                dokumentationURL:
+                  type: string
+                  format: uri
+                  description: "URL to the API documentation"
+                version:
+                  type: string
+                  description: "API version"
+                themen:
+                  type: array
+                  items:
+                    type: string
+                  description: "Thematic areas"
+                kontaktstelleOrganisation:
+                  type: string
+                  description: "Contact point organization"
+                kontaktstelleTelefon:
+                  type: string
+                  description: "Contact phone number"
+                kontaktstelleAdresse:
+                  type: string
+                  description: "Contact address"
+                landingPage:
+                  type: string
+                  format: uri
+                  description: "Landing page of the API"
+              required:
+                - apiTitel
+                - beschreibung
+                - herausgeber
+                - zugriffsrechte
+                - endpointURL
+                - kontaktEMailAdresse
+      responses:
+        '200':
+          description: "API successfully registered"
+        '400':
+          description: "Invalid input"
+        '500':
+          description: "Internal server error"
